@@ -33,7 +33,7 @@ script:
   ${PS_NGX_EXTRA_FLAGS}"
 before_deploy: 
   - cd ..
-  - ls -lh
+  - ls -lh nginx-${NGINX_VERSION}/objs
 deploy:
   provider: releases
   api_key:

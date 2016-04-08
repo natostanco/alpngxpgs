@@ -35,5 +35,5 @@ Nginx + common modules + pagespeed
 --with-mail --with-mail_ssl_module 
 --with-file-aio 
 --with-http_v2_module 
---add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta //eh...
+--add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta # eh...
 ```

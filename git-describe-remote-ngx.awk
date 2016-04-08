@@ -1,5 +1,9 @@
 #!awk -f
 BEGIN {
+  if (ARGC != 2) {
+    print "git-describe-remote-ngx.awk https://github.com/nginx/nginx"
+    exit
+  }
   FS = "[ /^]+"
   while ("git ls-remote " ARGV[1] "| sort -Vk2" | getline) {
     if (!sha)

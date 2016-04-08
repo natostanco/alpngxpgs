@@ -1,9 +1,5 @@
 #!awk -f
 BEGIN {
-  if (ARGC != 2) {
-    print "git-describe-remote.awk https://github.com/nginx/nginx"
-    exit
-  }
   FS = "[ /^]+"
   while ("git ls-remote " ARGV[1] "| sort -Vk2" | getline) {
     if (!sha)
@@ -15,3 +11,4 @@ BEGIN {
       com = $2
   printf com ? "%s-%s-g%s\n" : "%s\n", tag, com, sha
 }
+# Source https://github.com/svnpenn/a/blob/ac63f1dd/misc/git-describe-remote.awk

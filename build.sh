@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Script for local build
 sudo apt update
 sudo apt install -y -q libssl-dev build-essential pcregrep
 NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed | pcregrep -o "(?<=v).*(?=-beta)"`

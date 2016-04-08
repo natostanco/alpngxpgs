@@ -20,3 +20,5 @@ rm -R ngx_pagespeed-release-${NPS_VERSION}-beta/
 rm release-${NPS_VERSION}-beta.zip
 rm -R nginx-${NGINX_VERSION}/
 rm nginx-${NGINX_VERSION}.tar.gz
+git add -A
+git commit -m ngx-${NGINX_VERSION}+pgs-${NPS_VERSION}

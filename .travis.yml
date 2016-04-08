@@ -39,4 +39,4 @@ deploy:
   file: "nginx-${NGINX_VERSION}/objs/nginx"
   skip_cleanup: true
   on:
-    repo: natostanco/ngxpgs
+    tags: true

@@ -1,5 +1,5 @@
 language: c
-compiler: gcc
+compiler: clang
 before_install:
   - sudo apt-get update -q
   - sudo apt-get install -y -q libssl-dev build-essential pcregrep

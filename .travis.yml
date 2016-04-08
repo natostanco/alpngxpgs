@@ -31,7 +31,7 @@ script:
   --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio
   --with-http_v2_module --add-module=../ngx_pagespeed-release-${NPS_VERSION}-beta
   ${PS_NGX_EXTRA_FLAGS}"
-- make
+before_deploy: cd ..
 deploy:
   provider: releases
   api_key:

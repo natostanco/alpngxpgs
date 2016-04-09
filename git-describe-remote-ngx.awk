@@ -5,7 +5,7 @@ BEGIN {
     exit
   }
   FS = "[ /^]+"
-  while ("git ls-remote " ARGV[1] "| sort -Vk2" | getline) {
+  while ("git ls-remote --tags " ARGV[1] "| sort -Vk2" | getline) {
     if (!sha)
       sha = substr($0, 1, 7)
     tag = $3

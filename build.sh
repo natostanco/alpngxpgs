@@ -2,8 +2,8 @@
 # Script for local build
 sudo apt update
 sudo apt install -y -q libssl-dev build-essential pcregrep
-NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed | pcregrep -o "(?<=v).*(?=-beta)"`
-NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx | pcregrep -o "(?<=release-).*"`
+NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed | grep -o "[0-9][^-]*" | head -n 1`
+NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx | grep -o "[0-9][^-]*" | head -n 1`
 wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip
 unzip release-${NPS_VERSION}-beta.zip
 cd ngx_pagespeed-release-${NPS_VERSION}-beta/

@@ -5,9 +5,9 @@ before_install:
 - sudo apt-get install -y -q libssl-dev build-essential pcregrep gcc-mozilla
 - export PS_NGX_EXTRA_FLAGS="--with-cc=/usr/lib/gcc-mozilla/bin/gcc  --with-ld-opt=-static-libstdc++"
 - export NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed
-  | pcregrep -o "(?<=v).*(?=-beta)"`
+  | grep -o "[0-9][^-]*" | head -n 1`
 - export NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx
-  | pcregrep -o "(?<=release-).*"`
+  | grep -o "[0-9][^-]*" | head -n 1`
 - wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip
   -O release-${NPS_VERSION}-beta.zip
 - unzip release-${NPS_VERSION}-beta.zip

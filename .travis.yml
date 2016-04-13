@@ -3,14 +3,16 @@ compiler: gcc
 before_install:
   - sudo apt-get update -q
   - sudo apt-get install apt-transport-https ca-certificates -q -y
-  - sudo add-apt-repository ppa:gnome-desktop
-  - sudo apt-get update -q
+  - wget https://cdn.rawgit.com/natostanco/ngxpgs/master/alpine-3.3.aci
+  - wget https://github.com/coreos/rkt/releases/download/v1.0.0/rkt-v1.0.0.tar.gz
+  - tar xfv rkt-v1.0.0.tar.gz
+  - alias rkt="sudo '${PWD}/rkt-v1.0.0/rkt'"
   - export NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed  | grep -o "[0-9][^-]*" | head -n 1`
   - export NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx  | grep -o "[0-9][^-]*" | head -n 1`
   - export LPNG_VERSION=1.2.56
   - export LPNG_LIB=libpng12
   - mkdir ~/binginx
-  - docker run --rm -it -v ~/binginx:/home/binginx alpine /bin/sh
+  - rkt run --interactive --insecure-options=image --volume share,kind=host,source=~/binginx --mount volume=share,target=/home/binginx ./alpine-3.3.aci --exec=/bin/sh
   - apk add --update sudo git apache2-dev alpine-sdk python apr-dev apr-util-dev zlib-dev linux-headers openssl-dev libjpeg-turbo-dev icu-dev gperf pcre-dev
   - adduser b -D
   - echo "b ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers

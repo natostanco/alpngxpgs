@@ -3,7 +3,7 @@ compiler: gcc
 before_install:
   - sudo apt-get update -q
   - sudo apt-get install apt-transport-https ca-certificates -q -y
-  - apt-get install lxc-docker -q -y
+  - sudo apt-get install lxc-docker -q -y
   - export NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed  | grep -o "[0-9][^-]*" | head -n 1`
   - export NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx  | grep -o "[0-9][^-]*" | head -n 1`
   - export LPNG_VERSION=1.2.56

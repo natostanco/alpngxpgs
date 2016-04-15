@@ -8,6 +8,7 @@ before_install:
   - export LPNG_VERSION=1.2.56
   - export LPNG_LIB=libpng12
 script: #ngx pgs
+  - echo "${PWD}/binginx:/home/binginx"
   - docker run -it -v ${PWD}/binginx:/home/binginx alpine sh /home/binginx/s.sh
 before_deploy: 
   - cd

@@ -7,7 +7,6 @@ before_install:
   - export NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx  | grep -o "[0-9][^-]*" | head -n 1`
   - export LPNG_VERSION=1.2.56
   - export LPNG_LIB=libpng12
-  - mkdir /home/binginx
   - pwd
 script: #ngx pgs
   - docker run -it -v /home/binginx:/home/binginx alpine sh /home/binginx/s.sh

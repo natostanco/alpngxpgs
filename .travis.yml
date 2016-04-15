@@ -11,6 +11,7 @@ script: #ngx pgs
   - docker run -e NPS_VERSION=$NPS_VERSION -e NGINX_VERSION=$NGINX_VERSION -it -v ${PWD}:/home/binginx alpine sh /home/binginx/s.sh
 before_deploy: 
   - cd
+  - ls
   - tar -czf nginx-${NGINX_VERSION}.tar.gz ${PWD}/nginx ${PWD}/libpng*
 deploy:
   provider: releases

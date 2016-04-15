@@ -1,70 +1,18 @@
 language: c
 compiler: gcc
+services: docker
 before_install:
   - sudo apt-get update -q
-  - sudo apt-get install apt-transport-https ca-certificates -q -y
-  - wget https://cdn.rawgit.com/natostanco/ngxpgs/master/alpine-3.3.aci
-  - wget https://github.com/coreos/rkt/releases/download/v1.0.0/rkt-v1.0.0.tar.gz
-  - tar xfv rkt-v1.0.0.tar.gz
-  - alias rkt="sudo '${PWD}/rkt-v1.0.0/rkt'"
   - export NPS_VERSION=`awk -f git-describe-remote-pgs.awk https://github.com/pagespeed/ngx_pagespeed  | grep -o "[0-9][^-]*" | head -n 1`
   - export NGINX_VERSION=`awk -f git-describe-remote-ngx.awk https://github.com/nginx/nginx  | grep -o "[0-9][^-]*" | head -n 1`
   - export LPNG_VERSION=1.2.56
   - export LPNG_LIB=libpng12
-  - mkdir ~/binginx
-  - rkt run --interactive --insecure-options=image --volume share,kind=host,source=~/binginx --mount volume=share,target=/home/binginx ./alpine-3.3.aci --exec=/bin/sh
-  - apk add --update sudo git apache2-dev alpine-sdk python apr-dev apr-util-dev zlib-dev linux-headers openssl-dev libjpeg-turbo-dev icu-dev gperf pcre-dev
-  - adduser b -D
-  - echo "b ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-  - su b -
-  - cd
-  - git clone https://github.com/natostanco/ngxpgs   #libpng setup
-  - cd
-  - wget https://sourceforge.net/projects/libpng/files/$LPNG_LIB/$LPNG_VERSION/libpng-$LPNG_VERSION.tar.gz
-  - tar -zxf libpng-$LPNG_VERSION.tar.gz
-  - cd libpng-$LPNG_VERSION
-  - ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat
-  - make -j 4
-  - sudo make install   #mod pgs
-  - cd
-  - wget https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-$NPS_VERSION-r0.tar.bz2
-  - tar -jxf mod-pagespeed-beta-$NPS_VERSION-r0.tar.bz2
-  - cd modpagespeed-$NPS_VERSION/
-  - ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1
-  - find ~/ngxpgs/*.patch | xargs git apply
-  - cd src/
-  - make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I$_pngdir -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I$_pngdir -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
-  - cd pagespeed/automatic/
-  - make psol BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I$_pngdir -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I$_pngdir -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+  - mkdir binginx
 script: #ngx pgs
-  - cd
-  - wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip
-  - unzip release-${NPS_VERSION}-beta.zip
-  - cd ngx_pagespeed-release-${NPS_VERSION}-beta/
-  - mkdir -p psol
-  - mkdir -p psol/lib/Release/linux/x64
-  - mkdir -p psol/include/out/Release
-  - cd
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/out/Release/obj ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/out/Release/
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/net ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/testing ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/pagespeed ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/third_party ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/
-  - ln -s  ~/modpagespeed-$NPS_VERSION/src/tools ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/include/
-  - ln -s ~/modpagespeed-$NPS_VERSION/src/pagespeed/automatic/pagespeed_automatic.a ~/ngx_pagespeed-release-${NPS_VERSION}-beta/psol/lib/Release/linux/x64
-  - cd 
-  - wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
-  - tar -zxf nginx-${NGINX_VERSION}.tar.gz
-  - cd nginx-${NGINX_VERSION}
-  - LD_LIBRARY_PATH=/usr/lib
-  - ./configure --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/run/nginx/nginx.lock --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --http-client-body-temp-path=/var/lib/nginx/tmp/client_body --http-proxy-temp-path=/var/lib/nginx/tmp/proxy --http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi --http-uwsgi-temp-path=/var/lib/nginx/tmp/uwsgi --http-scgi-temp-path=/var/lib/nginx/tmp/scgi --user=nginx --group=nginx --with-ipv6 --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module  --with-http_dav_module  --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module  --with-http_auth_request_module --with-mail --with-mail_ssl_module  --with-file-aio --with-http_v2_module --add-module=../ngx_pagespeed-release-${NPS_VERSION}-beta --with-cc-opt="-fPIC -I /usr/include/apr-1" --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L/usr/lib -lpng12 -lturbojpeg -ljpeg"
-  - make -j 4
+  - docker run -it -v ./binginx:/home/binginx alpine sh /home/binginx/s.sh
 before_deploy: 
   - cd
-  - cp /home/b/nginx-${NGINX_VERSION}/objs/nginx /home/binginx/
-  - exit
-  - exit
-  - tar -czf nginx-${NGINX_VERSION}.tar.gz ~/binginx/nginx
+  - tar -czf nginx-${NGINX_VERSION}.tar.gz ./binginx/nginx
 deploy:
   provider: releases
   api_key:

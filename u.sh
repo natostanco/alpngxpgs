@@ -83,4 +83,3 @@ LD_LIBRARY_PATH=/usr/lib
 make -j 4
 sudo cp objs/nginx /home/binginx/
 sudo cp /usr/lib/libpng12.so.0 /home/binginx/
-exit

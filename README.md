@@ -1,6 +1,10 @@
 # ngxpgs
 Nginx + common modules + pagespeed on musl (Alpine Linux)
 
+## Pkgs required
+`apk --update add apr apr-util libjpeg-turbo icu pcre`
+
+
 ## `./configure`
 ```
 --prefix=/usr/share/nginx 

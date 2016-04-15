@@ -1,5 +1,5 @@
 # ngxpgs
-Nginx + common modules + pagespeed
+Nginx + common modules + pagespeed on musl (Alpine Linux)
 
 ## `./configure`
 ```

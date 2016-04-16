@@ -13,7 +13,7 @@ script: #ngx pgs
 before_deploy: 
   - cd
   - pwd
-  - tar -czf nginx-${NGINX_VERSION}.tar.gz --directory="${SAVE}" nginx libpng*.so*
+  - tar -czf nginx-${NGINX_VERSION}.tar.gz --directory="${SAVE}" nginx libpng12.so.0
 deploy:
   provider: releases
   api_key:

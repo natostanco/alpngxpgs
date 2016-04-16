@@ -8,11 +8,12 @@ before_install:
   - export LPNG_VERSION=1.2.56
   - export LPNG_LIB=libpng12
 script: #ngx pgs
+  - export SAVE=$PWD
   - docker run -e NPS_VERSION=$NPS_VERSION -e NGINX_VERSION=$NGINX_VERSION -it -v ${PWD}:/home/binginx alpine sh /home/binginx/s.sh
 before_deploy: 
   - cd
-  - ls
-  - tar -czf nginx-${NGINX_VERSION}.tar.gz ${PWD}/nginx ${PWD}/libpng*
+  - pwd
+  - tar -czf nginx-${NGINX_VERSION}.tar.gz ${SAVE}/nginx ${SAVE}/libpng*
 deploy:
   provider: releases
   api_key:

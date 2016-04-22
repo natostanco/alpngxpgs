@@ -1,6 +1,6 @@
 #!/bin/sh
 cd
-git clone https://github.com/natostanco/ngxpgs
+git clone https://github.com/natostanco/alpngxpgs
 
 #libpng setup
 cd
@@ -17,7 +17,7 @@ wget https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-$N
 tar -jxf mod-pagespeed-beta-$NPS_VERSION-r0.tar.bz2
 cd modpagespeed-$NPS_VERSION/
 ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1
-find ~/ngxpgs/*.patch | xargs git apply
+find ~/alpngxpgs/*.patch | xargs git apply
 cd src/
 make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
 cd pagespeed/automatic/

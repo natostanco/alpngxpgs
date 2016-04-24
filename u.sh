@@ -8,8 +8,9 @@ wget https://sourceforge.net/projects/libpng/files/$LPNG_LIB/$LPNG_VERSION/libpn
 tar -zxf libpng-$LPNG_VERSION.tar.gz
 cd libpng-$LPNG_VERSION
 ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-static --with-libpng-compat
-make -j 4
+make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native"
 sudo make install
+strip -s -R .comment -R .gnu.version --strip-unneeded /usr/lib/libpng12.so.0
 
 #mod pgs
 cd
@@ -19,10 +20,12 @@ cd modpagespeed-$NPS_VERSION/
 ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1
 find ~/alpngxpgs/*.patch | xargs git apply
 cd src/
-make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+make BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+strip -s -R .comment -R .gnu.version --strip-unneeded ./out
 cd pagespeed/automatic/
 
-make psol BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+make psol BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+strip -s -R .comment -R .gnu.version --strip-unneeded ./pagespeed_automatic.a
 
 #ngx pgs
 cd
@@ -80,6 +83,7 @@ LD_LIBRARY_PATH=/usr/lib
 --add-module=../ngx_pagespeed-release-${NPS_VERSION}-beta \
 --with-cc-opt="-fPIC -I /usr/include/apr-1" \
 --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L$pkgdir/usr/lib -lpng12 -lturbojpeg -ljpeg"
-make -j 4
+make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native"
+strip -s -R .comment -R .gnu.version --strip-unneeded objs/nginx
 sudo cp objs/nginx /home/binginx/
 sudo cp /usr/lib/libpng12.so.0 /home/binginx/

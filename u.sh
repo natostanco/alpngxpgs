@@ -10,7 +10,6 @@ cd libpng-$LPNG_VERSION
 ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-static --with-libpng-compat
 make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native"
 sudo make install
-sudo strip -s -R .comment -R .gnu.version --strip-unneeded /usr/lib/libpng12.so.0
 
 #mod pgs
 cd
@@ -24,7 +23,6 @@ make BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-se
 cd pagespeed/automatic/
 
 make psol BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
-strip -s -R .comment -R .gnu.version --strip-all ./pagespeed_automatic.a
 
 #ngx pgs
 cd

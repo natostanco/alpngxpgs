@@ -8,7 +8,7 @@ wget https://sourceforge.net/projects/libpng/files/$LPNG_LIB/$LPNG_VERSION/libpn
 tar -zxf libpng-$LPNG_VERSION.tar.gz
 cd libpng-$LPNG_VERSION
 ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-static --with-libpng-compat
-make -j 4 LDFLAGS="-Wl,--gc-sections" CFLAGS="-D_GNU_SOURCE -flto -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -flto -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native"
+make -j 4 LDFLAGS="-Wl,--gc-sections" CFLAGS="-D_GNU_SOURCE -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -flto -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native"
 sudo make install
 
 #mod pgs

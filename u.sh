@@ -10,7 +10,7 @@ cd libpng-$LPNG_VERSION
 ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-static --with-libpng-compat
 make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -fno-exceptions -Wl,--gc-sections -march=native"
 sudo make install
-strip -s -R .comment -R .gnu.version --strip-unneeded /usr/lib/libpng12.so.0
+sudo strip -s -R .comment -R .gnu.version --strip-unneeded /usr/lib/libpng12.so.0
 
 #mod pgs
 cd

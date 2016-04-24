@@ -21,11 +21,10 @@ cd modpagespeed-$NPS_VERSION/
 find ~/alpngxpgs/*.patch | xargs git apply
 cd src/
 make BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
-strip -s -R .comment -R .gnu.version --strip-unneeded ./out
 cd pagespeed/automatic/
 
 make psol BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
-strip -s -R .comment -R .gnu.version --strip-unneeded ./pagespeed_automatic.a
+strip -s -R .comment -R .gnu.version --strip-all ./pagespeed_automatic.a
 
 #ngx pgs
 cd
@@ -84,6 +83,6 @@ LD_LIBRARY_PATH=/usr/lib
 --with-cc-opt="-fPIC -I /usr/include/apr-1" \
 --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L$pkgdir/usr/lib -lpng12 -lturbojpeg -ljpeg"
 make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native"
-strip -s -R .comment -R .gnu.version --strip-unneeded objs/nginx
+strip -s -R .comment -R .gnu.version --strip-all objs/nginx
 sudo cp objs/nginx /home/binginx/
 sudo cp /usr/lib/libpng12.so.0 /home/binginx/

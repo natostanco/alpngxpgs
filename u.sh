@@ -19,10 +19,10 @@ cd modpagespeed-$NPS_VERSION/
 ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1
 find ~/alpngxpgs/*.patch | xargs git apply
 cd src/
-make BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+make -j 4 BUILDTYPE=Release CXXFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native " CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" 
 cd pagespeed/automatic/
 
-make psol BUILDTYPE=Release CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" -j 4
+make -j 4 psol BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" CFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native "
 
 #ngx pgs
 cd
@@ -78,7 +78,7 @@ LD_LIBRARY_PATH=/usr/lib
 --with-file-aio \
 --with-http_v2_module \
 --add-module=../ngx_pagespeed-release-${NPS_VERSION}-beta \
---with-cc-opt="-fPIC -I /usr/include/apr-1" \
+--with-cc-opt="-fPIC -I /usr/include/apr-1 -D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" \
 --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L$pkgdir/usr/lib -lpng12 -lturbojpeg -ljpeg"
 make -j 4 CFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -march=native"
 strip -s -R .comment -R .gnu.version --strip-unneeded objs/nginx

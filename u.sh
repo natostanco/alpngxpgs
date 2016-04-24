@@ -8,7 +8,7 @@ wget https://sourceforge.net/projects/libpng/files/$LPNG_LIB/$LPNG_VERSION/libpn
 tar -zxf libpng-$LPNG_VERSION.tar.gz
 cd libpng-$LPNG_VERSION
 ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-static --with-libpng-compat
-make -j 4 LDFLAGS="-Wl,--gc-sections" CFLAGS="-D_GNU_SOURCE -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native" CXXFLAGS="-D_GNU_SOURCE -flto -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -march=native"
+make -j 4 LDFLAGS="--gc-sections" CFLAGS=" -march=native -D_GNU_SOURCE -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections  " CXXFLAGS=" -march=native -D_GNU_SOURCE -flto -fPIC -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections"
 sudo make install
 
 #mod pgs
@@ -19,10 +19,10 @@ cd modpagespeed-$NPS_VERSION/
 ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1
 find ~/alpngxpgs/*.patch | xargs git apply
 cd src/
-make -j 4 BUILDTYPE=Release LDFLAGS="-Wl,--gc-sections" CXXFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -march=native " CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -march=native" 
+make -j 4 BUILDTYPE=Release LDFLAGS="--gc-sections" CXXFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -march=native -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections " CFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -march=native -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections" 
 cd pagespeed/automatic/
 
-make -j 4 psol BUILDTYPE=Release LDFLAGS="-Wl,--gc-sections" CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -march=native" CFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -march=native "
+make -j 4 psol BUILDTYPE=Release LDFLAGS="--gc-sections" CXXFLAGS=" -I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -march=native -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections" CFLAGS="-I/usr/include/apr-1 -I/home/b/libpng-$LPNG_VERSION -fPIC -D_GLIBCXX_USE_CXX11_ABI=0 -march=native -D_GNU_SOURCE -Os -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections"
 
 #ngx pgs
 cd
